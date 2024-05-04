@@ -15,7 +15,7 @@ dragElement(document.getElementById('plant14'));
 
 function dragElement(terrariumElement) {
   // Estableciendo posiciones iniciales
-  let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+  let despX = 0, despY = 0, initPosX = 0, initPosY = 0;
   // Se le asigna al terrariumElement
   // un manejador de eventos llamado pointerDrag para el
   // listener onpointerdown
@@ -29,8 +29,8 @@ function dragElement(terrariumElement) {
     // Se accedede a la posicion del mouse
     // mediante las propiedades clientX y clientY
     // del evento
-    pos3 = event.clientX;
-    pos4 = event.clientY;
+    initPosX = event.clientX;
+    initPosY = event.clientY;
     // Se crea la funcion de arrastre
     // dentro del estado pointerDrag
     document.onpointermove = elementDrag;
@@ -40,19 +40,20 @@ function dragElement(terrariumElement) {
 
     // Funcion elementDrag
     function elementDrag(eventOnPointerMove){
-      // Se calcula la nueva posicion
-      // como la diferencia de la posicion 1 (p3,p4)
-      // y la posicion actual del mouse
-      pos1 = pos3 - eventOnPointerMove.clientX;
-      pos2 = pos4 - eventOnPointerMove.clientY;
-      // Se actualiza la posicion actual del mouse
-      pos3 = eventOnPointerMove.clientX;
-      pos4 = eventOnPointerMove.clientY;
+      // Se calcula el desplazamiento
+      // como la diferencia de la posicion actual
+      // menos la posicion inicial
+      despX = eventOnPointerMove.clientX - initPosX;
+      despY = eventOnPointerMove.clientY - initPosY;
+      // Se actualiza la posicion inicial del mouse
+      initPosX = eventOnPointerMove.clientX;
+      initPosY = eventOnPointerMove.clientY;
       // Se imprimen las posiciones
-      console.log(pos1, pos2, pos3, pos4);
-      // Se le aplica offset al elemento
-      terrariumElement.style.left = `${terrariumElement.offsetLeft - pos1}px`;
-      terrariumElement.style.top = `${terrariumElement.offsetTop - pos2}px`;
+      console.log(despX, despY, initPosX, initPosY);
+      // Se le aplica offset al elemento, es decir se desplaza a la nueva
+      // posicion del mouse
+      terrariumElement.style.left = `${terrariumElement.offsetLeft + despX}px`;
+      terrariumElement.style.top = `${terrariumElement.offsetTop + despY}px`;
     }
     //  Función de liberación
     function stopElementDrag() {
